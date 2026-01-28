@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ./backend
+    container_name: chatapp-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+
+  postgres:
+    image: postgres:15
+    container_name: chatapp-db
+    restart: always
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      POSTGRES_DB: ${PGDATABASE}
+    ports:
+      - "${PGPORT}:${PGPORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
